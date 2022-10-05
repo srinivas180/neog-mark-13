@@ -40,26 +40,19 @@ function convertDateToStr(date) {
     return tempDateStr;
 }
 
-var date = {
-    day: 6,
-    month: 10,
-    year: 2022
-};
 
-var dateStr = convertDateToStr(date);
 
 function getDateVariations(dateStr) {
     var ddmmyyyy = dateStr.day + dateStr.month + dateStr.year;
     var mmddyyyy = dateStr.month + dateStr.day + dateStr.year;
-    var yyyymmdd = dateStr.year + dateStr.month + date.day;
+    var yyyymmdd = dateStr.year + dateStr.month + dateStr.day;
     var ddmmyy = dateStr.day + dateStr.month + dateStr.year.slice(-2);
     var mmddyy = dateStr.month + dateStr.day + dateStr.year.slice(-2);
-    var yymmdd = dateStr.year.slice(-2) + dateStr.month + date.day;
+    var yymmdd = dateStr.year.slice(-2) + dateStr.month + dateStr.day;
 
     return [ddmmyyyy, mmddyyyy, yyyymmdd, ddmmyy, mmddyy, yymmdd];
 }
 
-var isDatePalindrome = false;
 function checkPalindromeForAllDateVariations(dateStr) {
     var dateFormats = getDateVariations(dateStr);
     var palindromeDateformats = [];
@@ -150,10 +143,41 @@ function getNextPalindromicDate(date) {
     }
 }
 
+var dateInputHTML = document.querySelector("input[type='date']");
+var output = document.querySelector(".output");
+var btnCheck = document.querySelector(".btn-check");
 
-// Find next palindrome date if current date is not palindrome
-if(!isDatePalindrome) {
-    var [daysBetween, nextPalindromeDate] =  getNextPalindromicDate(date);
-    console.log(daysBetween, nextPalindromeDate);
+function checkPalindromeDate() {
+    var dateInput = dateInputHTML.value.split("-");
+    
+    var date = {
+        day: Number(dateInput[2]),
+        month: Number(dateInput[1]),
+        year: Number(dateInput[0])
+    }
+
+    var dateStr = convertDateToStr(date);
+
+    var isDatePalindrome = false;
+
+    var datePalindromeList = checkPalindromeForAllDateVariations(dateStr);
+
+    for(var i = 0; i < datePalindromeList.length; i++) {
+        if(datePalindromeList[i]) {
+            isDatePalindrome = true;
+            break;
+        }
+    }
+
+    // Find next palindrome date if current date is not palindrome
+    if(!isDatePalindrome) {
+        var [daysBetween, nextPalindromeDate] =  getNextPalindromicDate(date);
+        console.log(daysBetween, nextPalindromeDate);
+        output.innerHTML = "Your birthday is not palindrome, next palindrome date is " + nextPalindromeDate.day + "-" + nextPalindromeDate.month + "-" + nextPalindromeDate.year + " and you missed by " + daysBetween;
+    }
+    else {
+        output.innerHTML = "Your birthday is palindrome";
+    }
 }
 
+btnCheck.addEventListener("click", checkPalindromeDate);
