@@ -149,34 +149,38 @@ var btnCheck = document.querySelector(".btn-check");
 
 function checkPalindromeDate() {
     var dateInput = dateInputHTML.value.split("-");
-    
-    var date = {
-        day: Number(dateInput[2]),
-        month: Number(dateInput[1]),
-        year: Number(dateInput[0])
-    }
-
-    var dateStr = convertDateToStr(date);
-
-    var isDatePalindrome = false;
-
-    var datePalindromeList = checkPalindromeForAllDateVariations(dateStr);
-
-    for(var i = 0; i < datePalindromeList.length; i++) {
-        if(datePalindromeList[i]) {
-            isDatePalindrome = true;
-            break;
-        }
-    }
-
-    // Find next palindrome date if current date is not palindrome
-    if(!isDatePalindrome) {
-        var [daysBetween, nextPalindromeDate] =  getNextPalindromicDate(date);
-        console.log(daysBetween, nextPalindromeDate);
-        output.innerHTML = "Your birthday is not palindrome, next palindrome date is " + nextPalindromeDate.day + "-" + nextPalindromeDate.month + "-" + nextPalindromeDate.year + " and you missed by " + daysBetween;
+    if(dateInputHTML.value === '') {
+        output.innerText = "Please enter your birthday and click on check."
     }
     else {
-        output.innerHTML = "Your birthday is palindrome";
+        var date = {
+            day: Number(dateInput[2]),
+            month: Number(dateInput[1]),
+            year: Number(dateInput[0])
+        }
+    
+        var dateStr = convertDateToStr(date);
+    
+        var isDatePalindrome = false;
+    
+        var datePalindromeList = checkPalindromeForAllDateVariations(dateStr);
+    
+        for(var i = 0; i < datePalindromeList.length; i++) {
+            if(datePalindromeList[i]) {
+                isDatePalindrome = true;
+                break;
+            }
+        }
+    
+        // Find next palindrome date if current date is not palindrome
+        if(!isDatePalindrome) {
+            var [daysBetween, nextPalindromeDate] =  getNextPalindromicDate(date);
+            console.log(daysBetween, nextPalindromeDate);
+            output.innerHTML = "Your birthday is not palindrome, next palindrome date is " + nextPalindromeDate.day + "-" + nextPalindromeDate.month + "-" + nextPalindromeDate.year + " and you missed by " + daysBetween;
+        }
+        else {
+            output.innerHTML = "Your birthday is palindrome";
+        }
     }
 }
 
